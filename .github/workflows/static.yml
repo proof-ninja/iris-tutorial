@@ -28,16 +28,24 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/logsem/iris-tutorial/docker-x86-64:latest
+      options: --user root
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: make-ci
+        shell: bash -l {0}
+        run: export HOME=/root; eval $(opam env); make ci -j2; make html -j2
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: '.'
+          path: 'html/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
