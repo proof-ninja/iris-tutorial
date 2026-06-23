@@ -39,7 +39,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: make-ci
         shell: bash -l {0}
-        run: export HOME=/root; eval $(opam env); make ci -j2; make html -j2
+        run: export HOME=/root; eval $(opam env); make ci -j2; sh ./mkdoc.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
